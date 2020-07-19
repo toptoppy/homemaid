@@ -64,6 +64,50 @@ class TestMaidListAnotherView(TestCase):
         # Then
         assert '<li>BBBBBBBBBBBBBBBBBBBBBBBB</li>' in str(response.content)
         assert '<li>CCCCCCCCCCCCCCCCCCCCCCCC</li>' in str(response.content)
+    
+    @patch('maids.views.Maid')
+    def test_mock_orm_1(self, mock):
+        class MyObject:
+            pass
+        
+        first = MyObject()
+        first.name = 'BBBBBBBBBBBBBBBBBBBBBBBB'
+
+        second = MyObject()
+        second.name = 'CCCCCCCCCCCCCCCCCCCCCCCC'
+
+        mock.objects.all.return_value = [
+            first,
+            second,
+        ]
+
+        response = self.client.get(reverse('maid-another-list'))
+
+        # Then
+        assert '<li>BBBBBBBBBBBBBBBBBBBBBBBB</li>' in str(response.content)
+        assert '<li>CCCCCCCCCCCCCCCCCCCCCCCC</li>' in str(response.content)
+
+    @patch('maids.views.Maid.objects.all')
+    def test_mock_orm_2(self, mock):
+        class MyObject:
+            pass
+        
+        first = MyObject()
+        first.name = 'BBBBBBBBBBBBBBBBBBBBBBBB'
+
+        second = MyObject()
+        second.name = 'CCCCCCCCCCCCCCCCCCCCCCCC'
+
+        mock.return_value = [
+            first,
+            second,
+        ]
+
+        response = self.client.get(reverse('maid-another-list'))
+
+        # Then
+        assert '<li>BBBBBBBBBBBBBBBBBBBBBBBB</li>' in str(response.content)
+        assert '<li>CCCCCCCCCCCCCCCCCCCCCCCC</li>' in str(response.content)
 
 
 class TestMaidAddView(TestCase):
