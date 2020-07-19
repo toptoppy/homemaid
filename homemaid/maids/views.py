@@ -14,11 +14,10 @@ class MaidListView(View):
         return render(request, self.template_name, context)
 
 def maid_another_list_view(request):
-    if request.method == 'GET':
-        maids = Maid.objects.all()
-        html = ''
+    template_name = 'maid_list.html'
 
-        for maid in maids:
-            html += f'<li>{maid.name}</li>'
-        
-        return HttpResponse(html)
+    if request.method == 'GET':
+        context ={
+            'maid_list' : Maid.objects.all()
+        }
+        return render(request, template_name, context)
